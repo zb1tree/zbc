@@ -12,58 +12,41 @@ struct card
 };
 struct card* create()                                       //·¢ÅÆ ·µ»ØÍ· 
 {
-	struct card *pnew,*pend,*phead;
+	struct card* pnew,pend,phead;
 	phead=pnew=pend=(struct card*)malloc(sizeof(struct card));
 	int i,j;
 	for(i=1;i<53;i++)
-	{
-		switch
-		{
-			case i<14:
-			pnew->shape="spade";
-			break;
-			case i<27:
-			pnew->shape="heart";
-			break;
-			case i<40:
-			pnew->shape="diamond";
-			break;
-			case i<53:
-			pnew->shape="club";
+	{	
+		if(i<14)
+		    pnew->shape[]="spade";
+		if(i<27)
+		    pnew->shape[]="heart";
+		if(i<40)
+		    pnew->shape[]="diamond";
+		if(i<53)
+		    pnew->shape[]="club";		
+		if(1<(i%13)<11)
+	 	    pnew->face=i;
+		if((i%13)==1)
+		    pnew->face='A';
+		if((i%13)==11)
+		pnew->face='J';
+		if((i%13)==12)
+		    pnew->face='Q';
+		if((i%13)==13)
+		    pnew->face='K';
 		}
-		switch
-		{
-			case 1<(i%13)<11:
-			pnew->face=i;
-			break;
-			case (i%13)==1:
-			pnew->face=A;
-			break;
-			case (i%13)==11:
-			pnew->face=J;
-			break;
-			case(i%13)==12:
-			pnew->face=Q;
-			break;
-			case (i%13)==13:
-			pnew->face=K;
-		}
-		switch
-		{
-			case (i%13==0)||(i%13>=10):
-			pnew->value=10;
-			break;
-			case i%13==1:
-			pnew->value==11;
-			break;
-			default:
-			pnew->value=i;
+			if((i%13==0)||(i%13>=10))
+			    pnew->value=10;
+			if(i%13==1)
+			    pnew->value==11;
+			else
+			    pnew->value=i;
 		}
 		pnew=(struct card*)malloc(sizeof(struct card));
 		pend->pnext=pnew;
 		pend=pnew;
 		pnew->pnext=NULL;
-	}
 	free(pnew);
 	return phead;
 }
@@ -122,21 +105,25 @@ int player(int left,char s)
 	printf("Get it rolling");
 	for(j=0;j<1;j++)
 	{
-	    switch
-	    {
-	    	case s=='y':
-	    	y_reaction(order(left));
-	    	value=y_reaction;
-	    	break;
-	    	case s=='n':
-	    	printf("not bad\n");
-	    	value=0;
-	    	break;
-	    	default:
-	    	printf("exm");
-	    	j--;
-	    }
-    }
+	    	if(s=='y')
+	    	{
+	    	    y_reaction(order(left));
+	     	    value=y_reaction;
+	    	    break;
+	    	    if(s=='n')
+	    	}
+	    	if(s=='n')
+	    	{
+	    	    printf("not bad\n");
+	    	    value=0;
+	    	    break;
+	    	}
+	    	else
+	    	{
+	    	    printf("exm");
+	    	    j--;
+	    	}
+    }       
     return value;
 }
 void main()
@@ -150,39 +137,33 @@ void main()
 	printf("COME ON");
 	for(;;)
 	{
-		switch
-		{
-			case v1>21:
-			printf("YOU LOSE\n%d %d",v1,v2);
-			break;
-			case v2>21:
-			printf("YOU WIN\n%d %d",v1,v2);
-			break;
-			default:
-			break;
+	
+	    {
+			if(v1>21):
+		 	    printf("YOU LOSE\n%d %d",v1,v2);
+			if(v2>21):
+			    printf("YOU WIN\n%d %d",v1,v2);
 		}
 		printf("your choice(y/n/q)");
 		scanf("%c",&c);
 		if(c=='q')
-		break;
-		else
-		v1=player(Left,c);
-		if(c=='y');
-		Left--;
-		v2=player(Left,c);
-		if(c=='y');
-		Left--;
-	}
-	switch
 		{
-			case v1>v2:
-		    printf("YOU WIN\n%d %d",v1,v2);
+			printf("bye");
 		    break;
-		    case v1<v2:
-		    printf("YOU LOSE\n%d %d",v1,v2);
-			break;
-			case v1=v2:
-			printf("push\n%d %d",v1,v2);
 		}
+		else
+		    v1=player(Left,c);
+		if(c=='y');
+		    Left--;
+		v2=player(Left,c);
+	    if(c=='y');
+		    Left--;
+	}
+			if(v1>v2)
+		        printf("YOU WIN\n%d %d",v1,v2);
+		    if(v1<v2)
+		        printf("YOU LOSE\n%d %d",v1,v2);
+			if(v1=v2)
+			    printf("push\n%d %d",v1,v2);
 		return 0;
 }
