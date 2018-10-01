@@ -50,7 +50,7 @@ struct card* create()                                       //发牌 返回头
 	free(struct card* pnew);
 	return phead;
 }
-int order(int i)                                             //剩余牌数 返回随机值（未完成） 
+int order(int i)                                             //剩余牌数 返回随机值 
 {
 	int j;
 	srand((unsigned int)time(NULL));
