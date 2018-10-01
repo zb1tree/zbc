@@ -47,12 +47,15 @@ struct card* create()                                       //发牌 返回头
 		pend->pnext=pnew;
 		pend=pnew;
 		pnew->pnext=NULL;
-	free(pnew);
+	free(struct card* pnew);
 	return phead;
 }
 int order(int i)                                             //剩余牌数 返回随机值（未完成） 
 {
-	
+	int j;
+	srand((unsigned int)time(NULL));
+	j=(rand()%i);
+	return i;
 }
 struct card* getcard(int i,struct card* ph)                  //取牌    输入随机数  牌 
 {
