@@ -2,29 +2,32 @@
 #include<stdlib.h>
 #include<time.h>
 #include<string.h>
-int left=50;
 struct card
 {
-	char shape[];
+	char shape;
 	char face;
 	int value;
 	struct card* pnext;
 };
 struct card* create()                                       //·¢ÅÆ ·µ»ØÍ· 
 {
-	struct card* pnew,pend,phead;
-	phead=pnew=pend=(struct card*)malloc(sizeof(struct card));
+	struct card* pnew;
+	struct card* pend;
+	struct card* phead;
+	pnew=(struct card*)malloc(sizeof(struct card));
+	pend=pnew;
+	phead=pnew;
 	int i,j;
 	for(i=1;i<53;i++)
 	{	
 		if(i<14)
-		    pnew->shape[]="spade";
+		    pnew->shape="spade";
 		if(i<27)
-		    pnew->shape[]="heart";
+		    pnew->shape="heart";
 		if(i<40)
-		    pnew->shape[]="diamond";
+		    pnew->shape="diamond";
 		if(i<53)
-		    pnew->shape[]="club";		
+		    pnew->shape="club";
 		if(1<(i%13)<11)
 	 	    pnew->face=i;
 		if((i%13)==1)
@@ -35,19 +38,18 @@ struct card* create()                                       //·¢ÅÆ ·µ»ØÍ·
 		    pnew->face='Q';
 		if((i%13)==13)
 		    pnew->face='K';
-		}
+	}
 			if((i%13==0)||(i%13>=10))
 			    pnew->value=10;
 			if(i%13==1)
 			    pnew->value==11;
 			else
 			    pnew->value=i;
-		}
 		pnew=(struct card*)malloc(sizeof(struct card));
 		pend->pnext=pnew;
 		pend=pnew;
 		pnew->pnext=NULL;
-	free(struct card* pnew);
+	free(pnew);
 	return phead;
 }
 int order(int i)                                             //Ê£ÓàÅÆÊý ·µ»ØËæ»úÖµ£¨Î´Íê³É£© 
@@ -69,20 +71,21 @@ struct card* getcard(int i,struct card* ph)                  //È¡ÅÆ    ÊäÈëËæ»úÊ
 	}
 	return p1;
 }
-int y_reaction(int i,int Value)                                 //ÊäÈëY 
+int y_reaction(int i,int Value,struct card* pHead)                                 //ÊäÈëY 
 {
 	struct card* temp;
 	printf("OK\n");
 	temp=getcard(i,pHead);
 	printf("%s\n%c",temp->shape,temp->face);
-	dropcard(i,struct card* pHead);
+	dropcard(i,pHead);
 	Value+=temp->value;
 	return Value;
 }
 void dropcard(int i,struct card* ph)                                //ÅÆ×ªÒÆ 
 {
 	int n;
-	struct card* p1,p2;
+	struct card* p1;
+	struct card* p2;
 	p1=ph;
     p2=ph->pnext;
 	for(n=1;n<i-1;n++)
@@ -92,7 +95,7 @@ void dropcard(int i,struct card* ph)                                //ÅÆ×ªÒÆ
 	}
 	if(i==1)
 	{
-		ph=ph->next;
+		ph=ph->pnext;
 		free(p1);
 	}
 	else
@@ -101,7 +104,7 @@ void dropcard(int i,struct card* ph)                                //ÅÆ×ªÒÆ
 	    free(p2);
     }
 }
-int player(int left,char s)
+int player(int left,char s,struct card* phead)
 {
 	int j;
 	int value;
@@ -110,16 +113,13 @@ int player(int left,char s)
 	{
 	    	if(s=='y')
 	    	{
-	    	    y_reaction(order(left));
-	     	    value=y_reaction;
-	    	    break;
-	    	    if(s=='n')
+	    	    y_reaction(order(left),value,phead);
+	     	    value=y_reaction(order(left),value,phead);
 	    	}
 	    	if(s=='n')
 	    	{
 	    	    printf("not bad\n");
 	    	    value=0;
-	    	    break;
 	    	}
 	    	else
 	    	{
@@ -129,44 +129,57 @@ int player(int left,char s)
     }       
     return value;
 }
-void main()
+int main()
 {
-	struct card* pHead=create()
+    int Left=50;
+	struct card* pHead=create();
 	char c;
 	int v1,v2;
-	v1=y_reaction(52);
-	v2=y_reaction(51);
-	printf
+	v1=y_reaction(52,0,pHead);
+	v2=y_reaction(51,0,pHead);
 	printf("COME ON");
 	for(;;)
 	{
-	
-	    {
-			if(v1>21):
-		 	    printf("YOU LOSE\n%d %d",v1,v2);
-			if(v2>21):
-			    printf("YOU WIN\n%d %d",v1,v2);
-		}
+		if(v1>21)
+		{
+	 	    printf("YOU LOSE\n%d %d",v1,v2);
+	 	    getchar();
+	 	    exit(0);
+	 	}
+		if(v2>21)
+		{
+			printf("YOU WIN\n%d %d",v1,v2);
+		    getchar();
+		    exit(0);
+	    }
 		printf("your choice(y/n/q)");
 		scanf("%c",&c);
 		if(c=='q')
 		{
 			printf("bye");
-		    break;
-		}
-		else
-		    v1=player(Left,c);
-		if(c=='y');
-		    Left--;
-		v2=player(Left,c);
-	    if(c=='y');
-		    Left--;
-	}
 			if(v1>v2)
 		        printf("YOU WIN\n%d %d",v1,v2);
 		    if(v1<v2)
 		        printf("YOU LOSE\n%d %d",v1,v2);
 			if(v1=v2)
 			    printf("push\n%d %d",v1,v2);
-		return 0;
+			getchar();
+			exit(0);
+		}
+		else
+		    v1=player(Left,c,pHead);
+		if(c=='y');
+		    Left--;
+		if(v2>18)
+		    v2=player(Left,'n',pHead);
+		else
+		{
+			if(v2<v1)
+			{
+			    v2=player(Left,'y',pHead);
+			    Left--;
+			}
+		}
+	}
+		exit(0);
 }
