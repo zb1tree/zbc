@@ -52,7 +52,7 @@ struct card* create()                                       //·¢ÅÆ ·µ»ØÍ·
 	free(pnew);
 	return phead;
 }
-int order(int i)                                             //Ê£ÓàÅÆÊý ·µ»ØËæ»úÖµ£¨Î´Íê³É£© 
+int order(int i)                                             //Ê£ÓàÅÆÊý ·µ»ØËæ»úÖµ
 {
 	int j;
 	srand((unsigned int)time(NULL));
@@ -70,16 +70,6 @@ struct card* getcard(int i,struct card* ph)                  //È¡ÅÆ    ÊäÈëËæ»úÊ
 		p1=ph->pnext;
 	}
 	return p1;
-}
-int y_reaction(int i,int Value,struct card* pHead)                                 //ÊäÈëY 
-{
-	struct card* temp;
-	printf("OK\n");
-	temp=getcard(i,pHead);
-	printf("%s\n%c",temp->shape,temp->face);
-	dropcard(i,pHead);
-	Value+=temp->value;
-	return Value;
 }
 void dropcard(int i,struct card* ph)                                //ÅÆ×ªÒÆ 
 {
@@ -103,6 +93,16 @@ void dropcard(int i,struct card* ph)                                //ÅÆ×ªÒÆ
 	    p1->pnext=p2->pnext;
 	    free(p2);
     }
+}
+int y_reaction(int i,int Value,struct card* pHead)                                 //ÊäÈëY 
+{
+	struct card* temp;
+	printf("OK\n");
+	temp=getcard(i,pHead);
+	printf("%s\n%c",temp->shape,temp->face);
+	dropcard(i,pHead);
+	Value+=temp->value;
+	return Value;
 }
 int player(int left,char s,struct card* phead)
 {
@@ -129,6 +129,18 @@ int player(int left,char s,struct card* phead)
     }       
     return value;
 }
+void deletecard(struct card* p)                               //Çå³¡ 
+{
+	struct card* p1;
+	struct card* p2;
+	p1=p;
+	while(p1->pnext!=NULL)
+	{
+		p2=p1->pnext;
+		free(p1);
+		delete(p2);
+	}
+}
 int main()
 {
     int Left=50;
@@ -144,12 +156,14 @@ int main()
 		{
 	 	    printf("YOU LOSE\n%d %d",v1,v2);
 	 	    getchar();
+	 	    deletecard(pHead);
 	 	    exit(0);
 	 	}
 		if(v2>21)
 		{
 			printf("YOU WIN\n%d %d",v1,v2);
 		    getchar();
+		    deletecard(pHead);
 		    exit(0);
 	    }
 		printf("your choice(y/n/q)");
@@ -164,6 +178,7 @@ int main()
 			if(v1=v2)
 			    printf("push\n%d %d",v1,v2);
 			getchar();
+			deletecard(pHead);
 			exit(0);
 		}
 		else
@@ -181,5 +196,7 @@ int main()
 			}
 		}
 	}
+	    getchar();
+	    deletecard(pHead);
 		exit(0);
 }
