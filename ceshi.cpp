@@ -2,10 +2,11 @@
 #include<stdlib.h>
 #include<time.h>
 #include<string.h>
+#include<math.h>
 struct card
 {
-	char shape;
-	char face;
+	char shape[8];
+	char face[3];
 	int value;
 	struct card* pnext;
 };
@@ -17,39 +18,82 @@ struct card* create()                                       //·¢ÅÆ ·µ»ØÍ·
 	pnew=(struct card*)malloc(sizeof(struct card));
 	pend=pnew;
 	phead=pnew;
-	int i,j;
+	int i;
+	float j;
+	
 	for(i=1;i<53;i++)
 	{	
-		if(i<14)
-		    pnew->shape="spade";
-		if(i<27)
-		    pnew->shape="heart";
-		if(i<40)
-		    pnew->shape="diamond";
-		if(i<53)
-		    pnew->shape="club";
-		if(1<(i%13)<11)
-	 	    pnew->face=i;
-		if((i%13)==1)
-		    pnew->face='A';
-		if((i%13)==11)
-		pnew->face='J';
-		if((i%13)==12)
-		    pnew->face='Q';
-		if((i%13)==13)
-		    pnew->face='K';
-	}
-			if((i%13==0)||(i%13>=10))
-			    pnew->value=10;
-			if(i%13==1)
-			    pnew->value==11;
-			else
-			    pnew->value=i;
+	    switch ((int)(floor((i)/13)))
+	    {
+		case 0:
+		    strcpy(pnew->shape,"spade  ");
+		    break;
+		case 1:
+		    strcpy(pnew->shape,"heart  ");
+		    break;
+		case 2:
+		    strcpy(pnew->shape,"diamond");
+		    break;
+	    case 3:
+		    strcpy(pnew->shape,"club   ");
+		    break;
+		}
+		switch(i%13)
+		{
+			case 1:
+			strcpy(pnew->face,"A ");
+			break;
+			case 11:
+		    strcpy(pnew->face,"J ");
+		    break;
+		    case 12:
+		    strcpy(pnew->face,"Q ");
+		    break;
+            case 0:
+		    strcpy(pnew->face,"K ");
+		    break;
+            case 2:
+            strcpy(pnew->face,"2 ");
+			break;
+			case 3:
+            strcpy(pnew->face,"3 ");
+			break;
+			case 4:
+            strcpy(pnew->face,"4 ");
+			break;
+			case 5:
+            strcpy(pnew->face,"5 ");
+			break;
+			case 6:
+            strcpy(pnew->face,"6 ");
+			break;
+			case 7:
+            strcpy(pnew->face,"7 ");
+			break;
+			case 8:
+            strcpy(pnew->face,"8 ");
+			break;
+			case 9:
+            strcpy(pnew->face,"9 ");
+			break;
+			case 10:
+            strcpy(pnew->face,"10");
+			break;
+	    }
+		 if((i%13==0)||(i%13>=10))
+		     pnew->value=10;
+		 else
+		 {
+		     if(i%13==1)
+			     pnew->value=11;
+		     else
+		         pnew->value=(i%13);
+		 }
 		pnew=(struct card*)malloc(sizeof(struct card));
 		pend->pnext=pnew;
 		pend=pnew;
 		pnew->pnext=NULL;
-	free(pnew);
+	}
 	return phead;
 }
 int order(int i)                                             //Ê£ÓàÅÆÊı ·µ»ØËæ»úÖµ
@@ -57,7 +101,7 @@ int order(int i)                                             //Ê£ÓàÅÆÊı ·µ»ØËæ»ú
 	int j;
 	srand((unsigned int)time(NULL));
 	j=(rand()%i);
-	return i;
+	return j;
 }
 struct card* getcard(int i,struct card* ph)                  //È¡ÅÆ    ÊäÈëËæ»úÊı  ÅÆ 
 {
@@ -67,7 +111,7 @@ struct card* getcard(int i,struct card* ph)                  //È¡ÅÆ    ÊäÈëËæ»úÊ
 	
 	for(j=1;j<i;j++)
 	{
-		p1=ph->pnext;
+		p1=p1->pnext;
 	}
 	return p1;
 }
@@ -94,38 +138,66 @@ void dropcard(int i,struct card* ph)                                //ÅÆ×ªÒÆ
 	    free(p2);
     }
 }
-int y_reaction(int i,int Value,struct card* pHead)                                 //ÊäÈëY 
+int y_reaction_(int i,int Value,struct card* pHead)                                 //ÊäÈëY 
 {
 	struct card* temp;
-	printf("OK\n");
 	temp=getcard(i,pHead);
-	printf("%s\n%c",temp->shape,temp->face);
+	printf("%s\n%s\n",temp->shape,temp->face);
+	printf("==================================\n");
 	dropcard(i,pHead);
 	Value+=temp->value;
 	return Value;
+}
+int y_reaction(int i,int Value,struct card* pHead)                                 //ÊäÈëY 
+{
+	struct card* temp;
+	temp=getcard(i,pHead);
+	dropcard(i,pHead);
+	Value+=temp->value;
+	return Value;
+}
+int AI(int left,char s,struct card* phead)
+{
+	int j;
+	int value;
+	for(j=0;j<1;j++)
+	{
+	    	if(s=='y')
+	    	{
+	    		printf("OK\n");
+	     	    value=y_reaction(order(left),value,phead);
+	    	}
+	    	else
+	    	{
+	    	    if(s=='n')
+	    	    {
+	    	        printf("not bad\n");
+	    	        value=0;
+	    	    }
+	        }
+    }       
+    return value;
 }
 int player(int left,char s,struct card* phead)
 {
 	int j;
 	int value;
-	printf("Get it rolling");
 	for(j=0;j<1;j++)
 	{
 	    	if(s=='y')
 	    	{
-	    	    y_reaction(order(left),value,phead);
-	     	    value=y_reaction(order(left),value,phead);
-	    	}
-	    	if(s=='n')
-	    	{
-	    	    printf("not bad\n");
-	    	    value=0;
+	    		printf("OK\n");
+	    	    y_reaction_(order(left),value,phead);
+	     	    value=y_reaction_(order(left),value,phead);
 	    	}
 	    	else
 	    	{
-	    	    printf("exm");
-	    	    j--;
-	    	}
+	    	    if(s=='n')
+	    	    {
+	    	        printf("not bad\n");
+	    	        value=0;
+	    	    }
+	        }
     }       
     return value;
 }
@@ -144,12 +216,13 @@ void deletecard(struct card* p)                               //Çå³¡
 int main()
 {
     int Left=50;
-	struct card* pHead=create();
+	struct card* pHead;
+	pHead=create();
 	char c;
 	int v1,v2;
-	v1=y_reaction(52,0,pHead);
-	v2=y_reaction(51,0,pHead);
-	printf("COME ON");
+	v1=y_reaction_(order(52),0,pHead);
+	v2=y_reaction(order(Left),0,pHead);
+	printf("COME ON\n");
 	for(;;)
 	{
 		if(v1>21)
@@ -166,7 +239,7 @@ int main()
 		    deletecard(pHead);
 		    exit(0);
 	    }
-		printf("your choice(y/n/q)");
+		printf("your choice(y/n/q)\n");
 		scanf("%c",&c);
 		if(c=='q')
 		{
@@ -176,17 +249,17 @@ int main()
 		    if(v1<v2)
 		        printf("YOU LOSE\n%d %d",v1,v2);
 			if(v1=v2)
-			    printf("push\n%d %d",v1,v2);
+			    printf("push\nYOU:%d %d",v1,v2);
 			getchar();
 			deletecard(pHead);
 			exit(0);
 		}
 		else
-		    v1=player(Left,c,pHead);
+		    v1+=player(Left,c,pHead);
 		if(c=='y');
 		    Left--;
 		if(v2>18)
-		    v2=player(Left,'n',pHead);
+		    v2+=player(Left,'n',pHead);
 		else
 		{
 			if(v2<v1)
@@ -196,7 +269,4 @@ int main()
 			}
 		}
 	}
-	    getchar();
-	    deletecard(pHead);
-		exit(0);
 }
