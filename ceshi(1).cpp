@@ -138,7 +138,7 @@ void dropcard(int i,struct card* ph)                                //ÅÆ×ªÒÆ
 	    free(p2);
     }
 }
-int y_reaction_(int i,int Value,struct card* pHead)                                 //ÊäÈëY 
+int y_reaction_(int i,int Value,struct card* pHead,int value)                                 //ÊäÈëY 
 {
 	struct card* temp;
 	temp=getcard(i,pHead);
@@ -148,7 +148,7 @@ int y_reaction_(int i,int Value,struct card* pHead)                             
 	Value+=temp->value;
 	return Value;
 }
-int y_reaction(int i,int Value,struct card* pHead)                                 //ÊäÈëY 
+int y_reaction(int i,int Value,struct card* pHead,int value)                                 //ÊäÈëY 
 {
 	struct card* temp;
 	temp=getcard(i,pHead);
@@ -156,16 +156,15 @@ int y_reaction(int i,int Value,struct card* pHead)                              
 	Value+=temp->value;
 	return Value;
 }
-int AI(int left,char s,struct card* phead)
+int AI(int left,char s,struct card* phead,int value)
 {
 	int j;
-	int value;
 	for(j=0;j<1;j++)
 	{
 	    	if(s=='y')
 	    	{
 	    		printf("OK\n");
-	     	    value=y_reaction(order(left),value,phead);
+	     	    value=y_reaction(order(left),value,phead,value);
 	    	}
 	    	else
 	    	{
@@ -178,25 +177,21 @@ int AI(int left,char s,struct card* phead)
     }       
     return value;
 }
-int player(int left,char s,struct card* phead)
+int player(int left,char s,struct card* phead,int value)
 {
 	int j;
-	int value;
 	for(j=0;j<1;j++)
 	{
-	    	if(s=='y')
+	    	s=(int)s;
+	    	switch s;
 	    	{
+	    		case 89;
 	    		printf("OK\n");
-	    	    y_reaction_(order(left),value,phead);
-	     	    value=y_reaction_(order(left),value,phead);
-	    	}
-	    	else
-	    	{
-	    	    if(s=='n')
-	    	    {
+	    	    y_reaction_(order(left),value,phead,value);
+	     	    value=y_reaction_(order(left),value,phead,value);
+	    	    case 
 	    	        printf("not bad\n");
 	    	        value=0;
-	    	    }
 	        }
     }       
     return value;
@@ -220,8 +215,8 @@ int main()
 	pHead=create();
 	char c;
 	int v1,v2;
-	v1=y_reaction_(order(52),0,pHead);
-	v2=y_reaction(order(Left),0,pHead);
+	v1=y_reaction_(order(52),0,pHead,0);
+	v2=y_reaction(order(Left),0,pHead,0);
 	printf("COME ON\n");
 	for(;;)
 	{
@@ -255,16 +250,16 @@ int main()
 			exit(0);
 		}
 		else
-		    v1+=player(Left,c,pHead);
+		    v1+=player(Left,c,pHead,v1);
 		if(c=='y');
 		    Left--;
 		if(v2>18)
-		    v2+=player(Left,'n',pHead);
+		    v2+=player(Left,'n',pHead,v2);
 		else
 		{
 			if(v2<v1)
 			{
-			    v2=player(Left,'y',pHead);
+			    v2=player(Left,'y',pHead,v2);
 			    Left--;
 			}
 		}
