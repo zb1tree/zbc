@@ -249,13 +249,23 @@ int main()
 			if(v1>v2)
 			{
 		        printf("YOU WIN\nYOU:%d AI:%d",v1,v2);
+		        deletecard(pHead);
+		        exit(0);
 		    }
 		    else
 		    {
 		    	if(v1<v2)
-		        printf("YOU LOSE\nYOU:%d AI:%d",v1,v2);
+		    	{
+		            printf("YOU LOSE\nYOU:%d AI:%d",v1,v2);
+		            deletecard(pHead);
+		            exit(0);
+		        }
                 else
-			    printf("push\nYOU:%d AI:%d",v1,v2);
+                {
+			        printf("push\nYOU:%d AI:%d",v1,v2);
+			        deletecard(pHead);
+		            exit(0);
+		        }
 			}
 			getchar();
 			deletecard(pHead);
