@@ -265,7 +265,6 @@ int main()
 		    Left--;
 		    break;
 		    case 110:
-		    	printf("n\n");
 		    v1=player(Left,'n',pHead,v1);
 		    break;
 		    default:
