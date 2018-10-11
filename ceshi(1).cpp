@@ -169,13 +169,14 @@ int AI(int left,char s,struct card* phead,int value)
 	{
 	    	if(s=='y')
 	    	{
+	    		printf("AI ch y");
 	     	    value=y_reaction(order(left),value,phead);
 	    	}
 	    	else
 	    	{
 	    	    if(s=='n')
 	    	    {
-	    	        printf("not bad\n");
+	    	    	printf("==========n");
 	    	        value=0;
 	    	    }
 	        }
@@ -221,7 +222,6 @@ void deletecard(struct card* p)                               //Çå³¡
 }
 int main()
 {
-	int j;
     int Left=50;
 	struct card* pHead;
 	pHead=create();
@@ -247,27 +247,27 @@ int main()
 		    deletecard(pHead);
 		    exit(0);
 	    }
+	    printf("=============%c\n",c);
 		printf("your choice(y/n/q)\n");
 		c=getchar();
+		getchar();
 		c=(int)(c);
+		printf("%c",c);
 		switch (c)
 		{
 			case 113:
 			printf("bye\n");
-			j=
-			printf("%d\n%d    %d    %d    %d",j,v1,v2,floor((v1-v2)/21),floor(21/(v2-v1)));
-			switch(j)
+			if(v1>v2)
 			{
-				case 1:
 		        printf("YOU WIN\nYOU:%d AI:%d",v1,v2);
-		        break;
-		        case -2:
+		    }
+		    else
+		    {
+		    	if(v1<v2)
 		        printf("YOU LOSE\nYOU:%d AI:%d",v1,v2);
-		        break;
-			    case 0:
+                else
 			    printf("push\nYOU:%d AI:%d",v1,v2);
 			}
-			getchar();
 			deletecard(pHead);
 			exit(0);
 		    case 121:
@@ -280,7 +280,7 @@ int main()
 		    v1=player(Left,'n',pHead,v1);
 		    break;
 		    default:
-		    printf("exm \n");
+		    printf("===================exm \n");
 		}
 		if(v2>18)
 		    v2+=AI(Left,'n',pHead,v2);
