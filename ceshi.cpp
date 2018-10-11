@@ -23,7 +23,7 @@ struct card* create()                                       //发牌 返回头
 	
 	for(i=1;i<53;i++)
 	{	
-	    switch ((int)(floor((i)/13)))
+	    switch ((int)(floor((i-1)/13)))
 	    {
 		case 0:
 		    strcpy(pnew->shape,"spade  ");
@@ -144,60 +144,59 @@ int y_reaction_(int i,int Value,struct card* pHead)                             
 	temp=getcard(i,pHead);
 	printf("%s\n%s\n",temp->shape,temp->face);
 	printf("==================================\n");
-	dropcard(i,pHead);
 	Value+=temp->value;
+	dropcard(i,pHead);
 	return Value;
 }
 int y_reaction(int i,int Value,struct card* pHead)                                 //输入Y 
 {
 	struct card* temp;
 	temp=getcard(i,pHead);
-	dropcard(i,pHead);
 	Value+=temp->value;
+	dropcard(i,pHead);
 	return Value;
 }
-int AI(int left,char s,struct card* phead)
+int AI(int left,char s,struct card* phead,int value)
 {
 	int j;
-	int value;
 	for(j=0;j<1;j++)
 	{
 	    	if(s=='y')
 	    	{
-	    		printf("OK\n");
+	    		printf("AI chooses y\n");
 	     	    value=y_reaction(order(left),value,phead);
 	    	}
 	    	else
 	    	{
 	    	    if(s=='n')
 	    	    {
-	    	        printf("not bad\n");
+	    	    	printf("AI choose n\n");
 	    	        value=0;
 	    	    }
 	        }
     }       
     return value;
 }
-int player(int left,char s,struct card* phead)
+int player(int left,char s,struct card* phead,int value)
 {
 	int j;
-	int value;
 	for(j=0;j<1;j++)
 	{
-	    	if(s=='y')
-	    	{
-	    		printf("OK\n");
-	    	    y_reaction_(order(left),value,phead);
-	     	    value=y_reaction_(order(left),value,phead);
-	    	}
-	    	else
-	    	{
-	    	    if(s=='n')
-	    	    {
-	    	        printf("not bad\n");
-	    	        value=0;
-	    	    }
-	        }
+		s=(int)(s);
+	    switch(s)
+	    {
+		    case 121:    	
+	        printf("OK\n");
+	        value=y_reaction_(order(left),value,phead);
+	        break;
+	        case 110:	
+	        printf("not bad\n");
+	        break;
+		    default:
+		    printf("exm\n");
+		    s=getchar();
+		    j--;
+	    }
     }       
     return value;
 }
@@ -221,7 +220,7 @@ int main()
 	char c;
 	int v1,v2;
 	v1=y_reaction_(order(52),0,pHead);
-	v2=y_reaction(order(Left),0,pHead);
+	v2=y_reaction(order(51),0,pHead);
 	printf("COME ON\n");
 	for(;;)
 	{
@@ -240,31 +239,54 @@ int main()
 		    exit(0);
 	    }
 		printf("your choice(y/n/q)\n");
-		scanf("%c",&c);
-		if(c=='q')
+		c=getchar();
+		getchar();
+		c=(int)(c);
+		switch (c)
 		{
-			printf("bye");
+			case 113:
+			printf("bye\n");
 			if(v1>v2)
-		        printf("YOU WIN\n%d %d",v1,v2);
-		    if(v1<v2)
-		        printf("YOU LOSE\n%d %d",v1,v2);
-			if(v1=v2)
-			    printf("push\nYOU:%d %d",v1,v2);
+			{
+		        printf("YOU WIN\nYOU:%d AI:%d",v1,v2);
+		        deletecard(pHead);
+		        exit(0);
+		    }
+		    else
+		    {
+		    	if(v1<v2)
+		    	{
+		            printf("YOU LOSE\nYOU:%d AI:%d",v1,v2);
+		            deletecard(pHead);
+		            exit(0);
+		        }
+                else
+                {
+			        printf("push\nYOU:%d AI:%d",v1,v2);
+			        deletecard(pHead);
+		            exit(0);
+		        }
+			}
 			getchar();
 			deletecard(pHead);
 			exit(0);
-		}
-		else
-		    v1+=player(Left,c,pHead);
-		if(c=='y');
+		    case 121:
+		    v1=player(Left,'y',pHead,v1);
 		    Left--;
+		    break;
+		    case 110:
+		    v1=player(Left,'n',pHead,v1);
+		    break;
+		    default:
+		    ;
+		}
 		if(v2>18)
-		    v2+=player(Left,'n',pHead);
+		    v2+=AI(Left,'n',pHead,v2);
 		else
 		{
 			if(v2<v1)
 			{
-			    v2=player(Left,'y',pHead);
+			    v2=AI(Left,'y',pHead,v2);
 			    Left--;
 			}
 		}
