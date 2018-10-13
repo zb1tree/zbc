@@ -205,11 +205,11 @@ void deletecard(struct card* p)                               //Çå³¡
 	struct card* p1;
 	struct card* p2;
 	p1=p;
-	while(p1->pnext!=NULL)
+	for(;p1->pnext==NULL;)
 	{
 		p2=p1->pnext;
 		free(p1);
-		delete(p2);
+		p1=p2;
 	}
 }
 int main()
@@ -226,16 +226,16 @@ int main()
 	{
 		if(v1>21)
 		{
-	 	    printf("YOU LOSE\n%d %d",v1,v2);
-	 	    getchar();
-	 	    deletecard(pHead);
+	 	    printf("YOU LOSE\n%d %d\n",v1,v2);
+            deletecard(pHead);
+            system("pause");
 	 	    exit(0);
 	 	}
 		if(v2>21)
 		{
-			printf("YOU WIN\n%d %d",v1,v2);
-		    getchar();
-		    deletecard(pHead);
+			printf("YOU WIN\n%d %d\n",v1,v2);
+            deletecard(pHead);
+            system("pause");
 		    exit(0);
 	    }
 		printf("your choice(y/n/q)\n");
@@ -245,31 +245,36 @@ int main()
 		switch (c)
 		{
 			case 113:
-			printf("bye\n");
-			if(v1>v2)
+			while(v2<v1||v2<15)
 			{
-		        printf("YOU WIN\nYOU:%d AI:%d",v1,v2);
-		        deletecard(pHead);
+			    v2=AI(Left,'y',pHead,v2);
+			    Left--;
+			}
+			printf("bye\n");
+			if(v1>v2||v2>21)
+			{
+		        printf("YOU WIN\nYOU:%d AI:%d\n",v1,v2);
+                deletecard(pHead);
+                system("pause");
 		        exit(0);
 		    }
 		    else
 		    {
 		    	if(v1<v2)
 		    	{
-		            printf("YOU LOSE\nYOU:%d AI:%d",v1,v2);
-		            deletecard(pHead);
+		            printf("YOU LOSE\nYOU:%d AI:%d\n",v1,v2);
+                    deletecard(pHead);
+                    system("pause");
 		            exit(0);
 		        }
                 else
                 {
-			        printf("push\nYOU:%d AI:%d",v1,v2);
+			        printf("push\nYOU:%d AI:%d\n",v1,v2);
 			        deletecard(pHead);
+	                system("pause");		        
 		            exit(0);
 		        }
 			}
-			getchar();
-			deletecard(pHead);
-			exit(0);
 		    case 121:
 		    v1=player(Left,'y',pHead,v1);
 		    Left--;
@@ -278,7 +283,8 @@ int main()
 		    v1=player(Left,'n',pHead,v1);
 		    break;
 		    default:
-		    ;
+		    printf("exm\n");
+		    continue;
 		}
 		if(v2>18)
 		    v2+=AI(Left,'n',pHead,v2);
@@ -289,6 +295,11 @@ int main()
 			    v2=AI(Left,'y',pHead,v2);
 			    Left--;
 			}
+			else
+			{
+				v2=AI(Left,'n',pHead,v2);
+			}
 		}
 	}
+	return 0;
 }
