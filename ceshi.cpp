@@ -220,18 +220,24 @@ void deletecard(struct card* p)                               //Çå³¡
 }
 int main()
 {
-    int Left=50;
+    int Left=48;
 	struct card* pHead;
+	struct card* phd;
 	pHead=create();
 	char c;
 	int v1,v2;
 	v1=y_reaction_(order(52),0,pHead);
-	v2=y_reaction(order(51),0,pHead);
+	char hds[8],hdf[3];
+	phd=getcard(order(51),pHead);
+	v1+=phd->value;
+	v2=y_reaction(order(50),0,pHead);
+	v2=y_reaction(order(49),v2,pHead);
 	printf("COME ON\n");
 	for(;;)
 	{
 		if(v1>21)
 		{
+			printf("your hiden card\n\n%s\n%s\n",phd->shape,phd->face);
 	 	    printf("YOU LOSE\n%d %d\n",v1,v2);
             deletecard(pHead);
             system("pause");
@@ -239,6 +245,7 @@ int main()
 	 	}
 		if(v2>21)
 		{
+			printf("your hiden card\n\n%s\n%s\n",phd->shape,phd->face);
 			printf("YOU WIN\n%d %d\n",v1,v2);
             deletecard(pHead);
             system("pause");
@@ -259,6 +266,7 @@ int main()
 			printf("bye\n");
 			if(v1>v2||v2>21)
 			{
+			    printf("your hiden card\n\n%s\n%s\n",phd->shape,phd->face);
 		        printf("YOU WIN\nYOU:%d AI:%d\n",v1,v2);
                 deletecard(pHead);
                 system("pause");
@@ -268,6 +276,7 @@ int main()
 		    {
 		    	if(v1<v2)
 		    	{
+		    		printf("your hiden card\n\n%s\n%s\n",phd->shape,phd->face);
 		            printf("YOU LOSE\nYOU:%d AI:%d\n",v1,v2);
                     deletecard(pHead);
                     system("pause");
@@ -275,6 +284,7 @@ int main()
 		        }
                 else
                 {
+                	printf("your hiden card\n\n%s\n%s\n",phd->shape,phd->face);
 			        printf("push\nYOU:%d AI:%d\n",v1,v2);
 			        deletecard(pHead);
 	                system("pause");		        
