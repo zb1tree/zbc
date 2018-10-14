@@ -3,6 +3,8 @@
 #include<time.h>
 #include<string.h>
 #include<math.h>
+int A=0;
+int A_=0;
 struct card
 {
 	char shape[8];
@@ -145,6 +147,8 @@ int y_reaction_(int i,int Value,struct card* pHead)                             
 	printf("%s\n%s\n",temp->shape,temp->face);
 	printf("==================================\n");
 	Value+=temp->value;
+	if(temp->value==11)
+	A++;
 	dropcard(i,pHead);
 	return Value;
 }
@@ -153,6 +157,8 @@ int y_reaction(int i,int Value,struct card* pHead)                              
 	struct card* temp;
 	temp=getcard(i,pHead);
 	Value+=temp->value;
+	if(temp->value==11)
+	A_++;
 	dropcard(i,pHead);
 	return Value;
 }
@@ -186,7 +192,7 @@ int player(int left,char s,struct card* phead,int value)
 	    switch(s)
 	    {
 		    case 121:    	
-	        printf("OK\n");
+	        printf("OK\n\n");
 	        value=y_reaction_(order(left),value,phead);
 	        break;
 	        case 110:	
@@ -299,6 +305,16 @@ int main()
 			{
 				v2=AI(Left,'n',pHead,v2);
 			}
+		}
+		while(v1>21&&A>0)
+		{
+			v1-=10;
+			A--;
+		}
+		while(v2>21&&A_>0)
+		{
+			v2-=10;
+			A_--;
 		}
 	}
 	return 0;
