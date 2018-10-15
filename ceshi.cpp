@@ -170,7 +170,7 @@ int AI(int left,char s,struct card* phead,int value)
 	    	if(s=='y')
 	    	{
 	    		printf("AI chooses y\n");
-	     	    value=y_reaction(order(left),value,phead);
+	     	    value=y_reaction(order(left)+1,value,phead);
 	    	}
 	    	else
 	    	{
@@ -193,7 +193,7 @@ int player(int left,char s,struct card* phead,int value)
 	    {
 		    case 121:    	
 	        printf("OK\n\n");
-	        value=y_reaction_(order(left),value,phead);
+	        value=y_reaction_(order(left)+1,value,phead);
 	        break;
 	        case 110:	
 	        printf("not bad\n");
@@ -226,12 +226,12 @@ int main()
 	pHead=create();
 	char c;
 	int v1,v2;
-	v1=y_reaction_(order(52),0,pHead);
+	v1=y_reaction_(order(52)+1,0,pHead);
 	char hds[8],hdf[3];
-	phd=getcard(order(51),pHead);
+	phd=getcard(order(51)+1,pHead);
 	v1+=phd->value;
-	v2=y_reaction(order(50),0,pHead);
-	v2=y_reaction(order(49),v2,pHead);
+	v2=y_reaction(order(50)+1,0,pHead);
+	v2=y_reaction(order(49)+1,v2,pHead);
 	printf("COME ON\n");
 	for(;;)
 	{
@@ -263,6 +263,11 @@ int main()
 			    v2=AI(Left,'y',pHead,v2);
 			    Left--;
 			}
+			while(v2>21&&A_>0)
+		    {
+			    v2-=10;
+			    A_--;
+		    }
 			printf("bye\n");
 			if(v1>v2||v2>21)
 			{
